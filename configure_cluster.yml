@@ -36,9 +36,6 @@
     - debug:
         msg: "docker swarm init --advertise-addr {{ public_ip.json.ip }} | grep 'docker swarm join --token'"
 
-    - ansible.builtin.shell: "docker swarm leave --force"
-      become: yes
-
     - ansible.builtin.shell: "docker swarm init --advertise-addr {{ public_ip.json.ip }} | grep 'docker swarm join --token'"
       become: yes
       register: join_cmd
@@ -54,9 +51,6 @@
     - name: print join cmd
       debug:
         msg: "[Worker] {{ hostvars['join_cmd_holder']['cmd'] }}"
-
-    - ansible.builtin.shell: "docker swarm leave --force"
-      become: yes
       
     - name: join
       command: "{{ hostvars['join_cmd_holder']['cmd'] }}"
